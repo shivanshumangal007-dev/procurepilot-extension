@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons</title>
+</head>
+<body>
+  <h2>Right-click each canvas and "Save Image As"</h2>
+  <p>icon16.png:</p>
+  <canvas id="icon16" width="16" height="16"></canvas>
+  <p>icon48.png:</p>
+  <canvas id="icon48" width="48" height="48"></canvas>
+  <p>icon128.png:</p>
+  <canvas id="icon128" width="128" height="128"></canvas>
+  
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      
+      // Background
+      ctx.fillStyle = '#2563eb';
+      ctx.fillRect(0, 0, size, size);
+      
+      // White shape
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.moveTo(size * 0.5, size * 0.25);
+      ctx.lineTo(size * 0.75, size * 0.45);
+      ctx.lineTo(size * 0.5, size * 0.65);
+      ctx.lineTo(size * 0.25, size * 0.45);
+      ctx.closePath();
+      ctx.fill();
+    }
+    
+    drawIcon('icon16', 16);
+    drawIcon('icon48', 48);
+    drawIcon('icon128', 128);
+  </script>
+</body>
+</html>

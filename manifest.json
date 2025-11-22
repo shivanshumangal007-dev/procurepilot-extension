@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "ProcurePilot - Procurement Automation Assistant",
+  "version": "1.0.0",
+  "description": "Automate invoice processing with 3-Way Match validation",
+  "permissions": ["sidePanel", "activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "action": {
+    "default_title": "Open ProcurePilot"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "public/icon16.png",
+    "48": "public/icon48.png",
+    "128": "public/icon128.png"
+  }
+}

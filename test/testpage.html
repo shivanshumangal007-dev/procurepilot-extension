@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERP System - Invoice Entry Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .form-section {
+      padding: 40px;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    
+    .info-banner {
+      background: #eff6ff;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: start;
+      gap: 12px;
+    }
+    
+    .info-banner .icon {
+      font-size: 24px;
+    }
+    
+    .info-banner .content {
+      flex: 1;
+    }
+    
+    .info-banner .title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
+    
+    .info-banner .text {
+      font-size: 14px;
+      color: #1e40af;
+      line-height: 1.5;
+    }
+    
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 32px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏢 ERP Invoice Entry System</h1>
+      <p>Purchase Order & Invoice Management</p>
+    </div>
+    
+    <div class="form-section">
+      <div class="info-banner">
+        <div class="icon">🤖</div>
+        <div class="content">
+          <div class="title">ProcurePilot Integration Ready</div>
+          <div class="text">
+            Open the ProcurePilot extension in the side panel and click "Process Invoice" 
+            to automatically fill this form with invoice data and perform 3-Way Match validation.
+          </div>
+        </div>
+      </div>
+      
+      <form id="erpForm">
+        <div class="form-group">
+          <label for="vendorName">Vendor Name *</label>
+          <input 
+            type="text" 
+            id="vendorName" 
+            name="vendorName" 
+            placeholder="Enter vendor name"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="invoiceAmount">Invoice Amount ($) *</label>
+          <input 
+            type="number" 
+            id="invoiceAmount" 
+            name="invoiceAmount" 
+            placeholder="Enter invoice amount"
+            step="0.01"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="poAmount">Purchase Order Amount ($) *</label>
+          <input 
+            type="number" 
+            id="poAmount" 
+            name="poAmount" 
+            placeholder="Enter PO amount"
+            step="0.01"
+            required
+          />
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            Reset Form
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Submit Invoice
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Form submission handler
+    document.getElementById('erpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        vendorName: document.getElementById('vendorName').value,
+        invoiceAmount: parseFloat(document.getElementById('invoiceAmount').value),
+        poAmount: parseFloat(document.getElementById('poAmount').value)
+      };
+      
+      console.log('Form submitted:', formData);
+      
+      alert(`Invoice submitted successfully!\n\nVendor: ${formData.vendorName}\nInvoice Amount: $${formData.invoiceAmount}\nPO Amount: $${formData.poAmount}`);
+    });
+    
+    // Reset form function
+    function resetForm() {
+      document.getElementById('erpForm').reset();
+      
+      // Remove any styling added by ProcurePilot
+      ['vendorName', 'invoiceAmount', 'poAmount'].forEach(id => {
+        const field = document.getElementById(id);
+        field.style.border = '';
+        field.style.backgroundColor = '';
+        
+        // Remove warning labels
+        const warning = field.parentNode.querySelector('.procurepilot-warning');
+        if (warning) warning.remove();
+      });
+      
+      console.log('Form reset');
+    }
+  </script>
+</body>
+</html>

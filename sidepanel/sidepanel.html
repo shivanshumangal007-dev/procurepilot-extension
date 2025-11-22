@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProcurePilot</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div id="root">
+    <div class="procurepilot-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#2563eb"/>
+            <path d="M16 8L24 14L16 20L8 14L16 8Z" fill="white"/>
+            <path d="M16 16L24 22L16 28L8 22L16 16Z" fill="white" opacity="0.6"/>
+          </svg>
+          <h1>ProcurePilot</h1>
+        </div>
+        <div class="subtitle">Procurement Automation Assistant</div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="action-section">
+        <button class="process-button" id="processBtn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 4h12v2H4V4zm0 5h12v2H4V9zm0 5h8v2H4v-2z"/>
+          </svg>
+          Process Invoice
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      <div id="errorCard" class="error-card" style="display: none;"></div>
+
+      <!-- Invoice Data Display -->
+      <div id="invoiceSection" class="invoice-section" style="display: none;">
+        
+        <!-- PQ Eligibility Card (NEW) -->
+        <div class="pq-header">
+          <h2 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="margin-right: 8px; vertical-align: middle;">
+              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+            </svg>
+            PQ Eligibility Status
+          </h2>
+        </div>
+        
+        <div id="pqCard" class="pq-card">
+          <div class="pq-status-row">
+            <span class="pq-label">Vendor Pre-Qualification:</span>
+            <span id="pqBadge" class="pq-badge"></span>
+          </div>
+          
+          <div class="pq-details">
+            <div class="pq-metric">
+              <div class="metric-label">📊 Vendor Turnover</div>
+              <div class="metric-value" id="vendorTurnover"></div>
+            </div>
+            <div class="pq-metric">
+              <div class="metric-label">💰 Project Budget</div>
+              <div class="metric-value" id="projectBudget"></div>
+            </div>
+            <div class="pq-metric">
+              <div class="metric-label">📈 Turnover Ratio</div>
+              <div class="metric-value" id="turnoverRatio"></div>
+            </div>
+          </div>
+          
+          <div class="pq-capability">
+            <div class="capability-row">
+              <span class="capability-label">🎯 Required Capability:</span>
+              <span id="requiredCapability" class="capability-value"></span>
+            </div>
+            <div class="capability-row">
+              <span class="capability-label">✅ Vendor Capability:</span>
+              <span id="vendorCapability" class="capability-value"></span>
+            </div>
+          </div>
+          
+          <div class="pq-scores">
+            <div class="score-item">
+              <span class="score-label">Technical Score:</span>
+              <span id="technicalScore" class="score-value"></span>
+            </div>
+            <div class="score-item">
+              <span class="score-label">Financial Score:</span>
+              <span id="financialScore" class="score-value"></span>
+            </div>
+          </div>
+          
+          <div id="pqReasonCard" class="pq-reason"></div>
+        </div>
+
+        <!-- Divider -->
+        <div class="section-divider"></div>
+
+        <!-- Invoice Details -->
+        <h2 class="section-title">Invoice Details</h2>
+        
+        <div class="data-card">
+          <div class="data-row">
+            <span class="data-label">Vendor:</span>
+            <span class="data-value" id="vendorDisplay"></span>
+          </div>
+          
+          <div class="data-row">
+            <span class="data-label">Invoice Amount:</span>
+            <span class="data-value amount" id="invoiceAmountDisplay"></span>
+          </div>
+          
+          <div class="data-row">
+            <span class="data-label">PO Amount:</span>
+            <span class="data-value amount" id="poAmountDisplay"></span>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <div class="data-row">
+            <span class="data-label">3-Way Match Status:</span>
+            <span class="status-badge" id="statusBadge"></span>
+          </div>
+        </div>
+
+        <!-- Mismatch Warning -->
+        <div id="warningCard" class="warning-card" style="display: none;">
+          <div class="warning-icon">🚨</div>
+          <div class="warning-content">
+            <h3>Amount Mismatch Detected</h3>
+            <p id="warningText"></p>
+            <p class="warning-detail" id="warningDiff"></p>
+            <p class="warning-action">
+              ⚠️ Form fields have been highlighted in red on the page.
+            </p>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successCard" class="success-card" style="display: none;">
+          <div class="success-icon">✓</div>
+          <div class="success-content">
+            <h3>3-Way Match Successful</h3>
+            <p>Invoice and PO amounts match. Ready for processing.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div id="infoSection" class="info-section">
+        <div class="info-card">
+          <h3>How to Use</h3>
+          <ol>
+            <li>Navigate to your ERP form page</li>
+            <li>Click "Process Invoice" button</li>
+            <li>Extension will auto-fill form fields</li>
+            <li>Review PQ eligibility and 3-Way Match results</li>
+          </ol>
+        </div>
+        
+        <div class="features">
+          <h4>Features</h4>
+          <ul>
+            <li>✓ PQ Eligibility Evaluation</li>
+            <li>✓ Automated form filling</li>
+            <li>✓ 3-Way Match validation</li>
+            <li>✓ Mismatch detection</li>
+            <li>✓ Real-time alerts</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="version">v1.1.0 MVP</div>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          Ready
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
