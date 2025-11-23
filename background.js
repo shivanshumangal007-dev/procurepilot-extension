@@ -121,7 +121,7 @@ function generateMockInvoiceData() {
         "All pre-qualification criteria met (invoice mismatch requires review)",
     },
   ];
-
+  
   // Randomly select a scenario for demo
   const randomScenario =
     scenarios[Math.floor(Math.random() * scenarios.length)];
