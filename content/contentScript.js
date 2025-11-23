@@ -1,8 +1,8 @@
-// Listen for messages from background script
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "fillForm") {
     console.log("Filling form with data:", request.data);
-    // Clear previous styling first, then fill form
+
     clearPreviousStyling();
     fillERPForm(request.data);
     sendResponse({ success: true });
@@ -17,9 +17,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
-/**
- * Clear all previous styling and warnings before new fill
- */
 function clearPreviousStyling() {
   console.log("Clearing previous form styling and warnings");
 
@@ -28,13 +25,13 @@ function clearPreviousStyling() {
   fieldIds.forEach((id) => {
     const field = document.getElementById(id);
     if (field) {
-      // Remove all custom styling
+    
       field.style.border = "";
       field.style.backgroundColor = "";
       field.style.outline = "";
       field.style.boxShadow = "";
 
-      // Remove warning labels
+     
       const warning = field.parentNode.querySelector(".procurepilot-warning");
       if (warning) {
         warning.remove();
@@ -42,7 +39,6 @@ function clearPreviousStyling() {
     }
   });
 
-  // Remove any notification banners
   const notification = document.getElementById("procurepilot-notification");
   if (notification) {
     notification.remove();
@@ -51,13 +47,9 @@ function clearPreviousStyling() {
   console.log("Previous styling cleared successfully");
 }
 
-/**
- * Auto-fill ERP form fields and perform 3-Way Match validation
- */
 function fillERPForm(data) {
   const { vendorName, invoiceAmount, poAmount, status } = data;
 
-  // Find form fields
   const vendorField = document.getElementById("vendorName");
   const invoiceField = document.getElementById("invoiceAmount");
   const poField = document.getElementById("poAmount");
@@ -68,14 +60,12 @@ function fillERPForm(data) {
     return;
   }
 
-  // Clear existing values first
   vendorField.value = "";
   invoiceField.value = "";
   poField.value = "";
 
-  // Small delay to ensure clearing is visible
   setTimeout(() => {
-    // Fill form fields with new values
+
     if (vendorField) {
       vendorField.value = vendorName;
       vendorField.dispatchEvent(new Event("input", { bubbles: true }));
@@ -94,9 +84,9 @@ function fillERPForm(data) {
       poField.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
-    // Perform 3-Way Match validation
+
     if (status === "Mismatch") {
-      // Highlight mismatched fields with red border
+ 
       if (invoiceField) {
         invoiceField.style.border = "3px solid #dc2626";
         invoiceField.style.backgroundColor = "#fee2e2";
@@ -106,7 +96,6 @@ function fillERPForm(data) {
         poField.style.backgroundColor = "#fee2e2";
       }
 
-      // Add warning label
       addMismatchWarning(invoiceField);
       addMismatchWarning(poField);
 
@@ -115,7 +104,7 @@ function fillERPForm(data) {
         "error"
       );
     } else {
-      // Success - green border
+
       if (invoiceField) {
         invoiceField.style.border = "3px solid #16a34a";
         invoiceField.style.backgroundColor = "#dcfce7";
@@ -139,13 +128,9 @@ function fillERPForm(data) {
   }, 100);
 }
 
-/**
- * Add warning label next to mismatched field
- */
 function addMismatchWarning(element) {
   if (!element) return;
 
-  // Remove existing warning if present
   const existingWarning = element.parentNode.querySelector(
     ".procurepilot-warning"
   );
@@ -169,11 +154,8 @@ function addMismatchWarning(element) {
   element.parentNode.insertBefore(warning, element.nextSibling);
 }
 
-/**
- * Show notification banner on page
- */
 function showNotification(message, type = "info") {
-  // Remove existing notification
+
   const existing = document.getElementById("procurepilot-notification");
   if (existing) existing.remove();
 
@@ -209,14 +191,12 @@ function showNotification(message, type = "info") {
   notification.textContent = message;
   document.body.appendChild(notification);
 
-  // Auto-remove after 5 seconds
   setTimeout(() => {
     notification.style.animation = "slideOut 0.3s ease-out";
     setTimeout(() => notification.remove(), 300);
   }, 5000);
 }
 
-// Add animation styles
 if (!document.getElementById("procurepilot-styles")) {
   const style = document.createElement("style");
   style.id = "procurepilot-styles";
