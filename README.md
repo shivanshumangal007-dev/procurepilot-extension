@@ -65,34 +65,6 @@ Example:
 
 * Shows real‑time agent reasoning
 * A Hackathon "WOW" moment
-
----
-
-## 🧠 Tech Stack
-
-### **Frontend (Browser Extension)**
-
-* Plasmo Framework (React + TypeScript)
-* Chrome Side Panel API
-* Shadow DOM Overlays (for highlighting fields)
-
-### **Backend / AI Engine**
-
-* Python
-* FastAPI + WebSockets
-* `browser-use` (Vision-based browser automation)
-* Playwright automation
-* Vision-LLMs (GPT‑4o / Claude 3.5 Sonnet)
-* Donut (document understanding)
-* pdfplumber (text extraction)
-* dateparser, regex cleanup
-
-### **Document Intelligence**
-
-* Donut Transformer model (OCR‑free)
-* LayoutLMv3 (optional)
-* pdf2image + pytesseract (fallback scanning)
-
 ---
 
 ## 📁 Project Structure
@@ -105,12 +77,6 @@ HACKATHON/
 │   ├── donut_reader.py
 │   ├── pq_checker.py
 │   └── matcher.py
-│
-├── backend/
-│   ├── server.py (FastAPI + WebSocket)
-│   ├── agent.py (browser-use agent)
-│   └── tools.py
-│
 ├── extension/
 │   ├── popup.tsx
 │   ├── sidepanel.tsx
@@ -155,31 +121,15 @@ HACKATHON/
 
 ## 📦 Installation
 
-```bash
-# create venv
-python -m venv .venv
-source .venv/bin/activate   # windows: .venv\Scripts\activate
+### 1. Clone the Repository
+git clone https://github.com/yourusername/procurepilot.git
+cd procurepilot
 
-# install backend deps
-pip install fastapi uvicorn pdfplumber pdf2image pillow dateparser transformers browser-use playwright
-playwright install
-```
-
-Extension installation:
-
-* Go to Chrome → Extensions → Load Unpacked → select `/extension`
-
----
-
-## 🚀 Run Backend
-
-```bash
-uvicorn server:app --reload
-```
-
-Chrome extension connects to backend via WebSocket.
-
----
+### 2. Load into Chrome
+1. Open Chrome and navigate to `chrome://extensions/`.
+2. Toggle **Developer mode** in the top-right corner.
+3. Click the **Load unpacked** button.
+4. Select the `procurepilot-extension` folder from this repository.
 
 ## 📈 Business Model (Future Scope)
 
@@ -190,6 +140,12 @@ Chrome extension connects to backend via WebSocket.
 
 ---
 
+## 🚧 Procurement Extractor (AI Engine) - *Coming Soon*
+
+We are currently developing an advanced **AI-Powered Document Intelligence Engine** (`procurement_extractor`) to replace the current simulation logic. This module is architected to handle unstructured data with enterprise-grade accuracy.
+
+> **Status**: 🟡 In Development (Alpha)
+> *The source code for this module is available in the `procurement_extractor/` directory but is not yet connected to the live extension.*
 ## 🤝 Team
 
 We are Team **ProcurePilot** — builders of agentic enterprise automation!
